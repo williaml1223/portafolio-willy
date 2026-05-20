@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio · Servicios con IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --white: #F7F4EF;
+    --cream: #EDE8DF;
+    --accent1: #2A5C45; /* verde oscuro */
+    --accent2: #C8873A; /* ámbar */
+    --accent3: #1E3A5F; /* azul noche */
+    --muted: #7A756D;
+    --border: rgba(10,10,10,0.10);
+    --card-bg: #FFFFFF;
+    --tag-bg: rgba(42,92,69,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    background-size: 180px;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(247,244,239,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem;
+    color: var(--black);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-logo span { color: var(--accent1); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--black); }
+
+  .nav-cta {
+    background: var(--black);
+    color: var(--white) !important;
+    padding: 9px 22px;
+    border-radius: 100px;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent1) !important; color: #fff !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-shape {
+    position: absolute;
+    top: -10%;
+    right: -8%;
+    width: 620px;
+    height: 620px;
+    background: radial-gradient(ellipse at center, rgba(42,92,69,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero-bg-shape2 {
+    position: absolute;
+    bottom: 5%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, rgba(200,135,58,0.09) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 11s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-24px) scale(1.03); }
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--tag-bg);
+    color: var(--accent1);
+    border: 1px solid rgba(42,92,69,0.20);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--accent1);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--black);
+    margin-bottom: 28px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent1);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 44px;
+    font-weight: 300;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--black);
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--accent1); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--black);
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+
+  .btn-secondary:hover { border-color: var(--black); background: var(--cream); transform: translateY(-2px); }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    background: var(--black);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    overflow: hidden;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 52px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-number span { color: var(--accent2); }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: rgba(247,244,239,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    padding: 100px 48px;
+    max-width: 1160px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px;
+    height: 1.5px;
+    background: var(--muted);
+    display: inline-block;
+  }
+
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--black);
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    font-weight: 300;
+    margin-bottom: 64px;
+  }
+
+  /* ── SERVICE CARDS ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 20px 20px 0 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-card.green::before { background: linear-gradient(90deg, var(--accent1), #4A9B70); }
+  .service-card.amber::before { background: linear-gradient(90deg, var(--accent2), #E8A855); }
+  .service-card.blue::before  { background: linear-gradient(90deg, var(--accent3), #2E5F96); }
+
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.10);
+  }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+  }
+
+  .service-card.green .service-icon { background: rgba(42,92,69,0.10); }
+  .service-card.amber .service-icon { background: rgba(200,135,58,0.10); }
+  .service-card.blue  .service-icon { background: rgba(30,58,95,0.10); }
+
+  .service-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .service-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem;
+    color: var(--black);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .service-client {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .service-card.green .service-client { color: var(--accent1); }
+  .service-card.amber .service-client { color: var(--accent2); }
+  .service-card.blue  .service-client { color: var(--accent3); }
+
+  .service-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .service-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .result-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  .result-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .service-card.green .dot { background: var(--accent1); }
+  .service-card.amber .dot { background: var(--accent2); }
+  .service-card.blue  .dot { background: var(--accent3); }
+
+  .service-price {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .service-price-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .service-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .deliverables {
+    list-style: none;
+  }
+
+  .deliverables li {
+    font-size: 0.83rem;
+    color: var(--muted);
+    padding: 5px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .deliverables li::before {
+    content: '→';
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .service-card.green .deliverables li::before { color: var(--accent1); }
+  .service-card.amber .deliverables li::before { color: var(--accent2); }
+  .service-card.blue  .deliverables li::before { color: var(--accent3); }
+
+  /* ── CASE STUDIES ── */
+  .cases-section {
+    background: var(--cream);
+    padding: 100px 0;
+  }
+
+  .cases-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .case-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    padding: 72px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .case-block:last-child { border-bottom: none; }
+  .case-block.reverse { direction: rtl; }
+  .case-block.reverse > * { direction: ltr; }
+
+  .case-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .case-tag.green { background: rgba(42,92,69,0.12); color: var(--accent1); }
+  .case-tag.amber { background: rgba(200,135,58,0.12); color: var(--accent2); }
+  .case-tag.blue  { background: rgba(30,58,95,0.12);  color: var(--accent3); }
+
+  .case-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+
+  .case-problem {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .case-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .metric-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+
+  .metric-value {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2rem;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .metric-value.green { color: var(--accent1); }
+  .metric-value.amber { color: var(--accent2); }
+  .metric-value.blue  { color: var(--accent3); }
+
+  .metric-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* Visual mockup panel */
+  .case-visual {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  .visual-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  .dot-red   { width: 11px; height: 11px; border-radius: 50%; background: #FF5F56; }
+  .dot-yellow{ width: 11px; height: 11px; border-radius: 50%; background: #FFBD2E; }
+  .dot-green2{ width: 11px; height: 11px; border-radius: 50%; background: #27C93F; }
+
+  .visual-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: 8px;
+  }
+
+  .visual-body {
+    padding: 24px;
+  }
+
+  .mock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .mock-table th {
+    text-align: left;
+    padding: 7px 10px;
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mock-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: var(--black);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  .mock-table tr:last-child td { border-bottom: none; }
+
+  .tag-red   { background: #FFEBEE; color: #C62828; font-size: 0.67rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+  .tag-green3{ background: #E8F5E9; color: #2E7D32; font-size: 0.67rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+  .tag-amber2{ background: #FFF8E1; color: #F57F17; font-size: 0.67rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+
+  .mock-highlight { background: rgba(42,92,69,0.07); }
+
+  /* SEO audit mock */
+  .seo-row { display: flex; flex-direction: column; gap: 14px; }
+  .seo-item { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .seo-url  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--accent3); margin-bottom: 5px; }
+  .seo-issue{ font-size: 0.8rem; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+  .seo-fix  { font-size: 0.75rem; color: var(--muted); }
+
+  /* Finance mock */
+  .finance-row { display: flex; flex-direction: column; gap: 10px; }
+  .fin-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 8px; }
+  .fin-item.ok   { background: #F1F8F2; }
+  .fin-item.warn { background: #FFF8E1; }
+  .fin-item.bad  { background: #FFF0F0; }
+  .fin-label { font-size: 0.8rem; font-weight: 500; color: var(--black); }
+  .fin-amount{ font-family: 'DM Mono', monospace; font-size: 0.8rem; font-weight: 600; }
+  .fin-item.ok   .fin-amount { color: var(--accent1); }
+  .fin-item.warn .fin-amount { color: #E65100; }
+  .fin-item.bad  .fin-amount { color: #C62828; }
+
+  /* ── HOW IT WORKS ── */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 56px;
+  }
+
+  .process-step {
+    background: var(--white);
+    padding: 36px 28px;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 3rem;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+  }
+
+  .step-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FAQ ── */
+  .faq-list { display: flex; flex-direction: column; gap: 0; margin-top: 56px; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 24px 0;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: color 0.2s;
+  }
+
+  .faq-question:hover { color: var(--accent1); }
+
+  .faq-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: var(--muted);
+    transition: transform 0.3s, background 0.2s;
+  }
+
+  .faq-item.open .faq-icon {
+    transform: rotate(45deg);
+    background: var(--accent1);
+    border-color: var(--accent1);
+    color: white;
+  }
+
+  .faq-answer {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0;
+  }
+
+  .faq-item.open .faq-answer {
+    max-height: 300px;
+    padding-bottom: 24px;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    background: var(--black);
+    padding: 120px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(42,92,69,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner { position: relative; z-index: 1; }
+
+  .cta-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+  }
+
+  .cta-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+
+  .cta-title em { color: var(--accent2); font-style: italic; }
+
+  .cta-sub {
+    font-size: 1rem;
+    color: rgba(247,244,239,0.5);
+    margin-bottom: 44px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+  }
+
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-cta-main {
+    background: var(--accent2);
+    color: var(--black);
+    padding: 15px 36px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-cta-main:hover { background: #D99840; transform: translateY(-2px); }
+
+  .btn-cta-sec {
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+    padding: 15px 36px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-cta-sec:hover { background: rgba(255,255,255,0.14); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem;
+    color: rgba(247,244,239,0.6);
+  }
+
+  .footer-logo span { color: var(--accent1); }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(247,244,239,0.3);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 110px 24px 60px; }
+    .section { padding: 72px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .case-block { grid-template-columns: 1fr; gap: 40px; }
+    .case-block.reverse { direction: ltr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .stats-strip { padding: 24px; }
+    .stat-item { padding: 12px 24px; }
+    .cases-inner { padding: 0 24px; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">AI<span>Freelancer</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#casos">Casos reales</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contacto" class="nav-cta">Hablemos →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-bg-shape2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Disponible para nuevos proyectos</div>
+    <h1>Resultados reales.<br><em>Entregados con IA.</em></h1>
+    <p class="hero-sub">Prospección B2B, SEO y Operaciones Financieras. Trabajo para fundadores y equipos que necesitan outputs profesionales — no promesas.</p>
+    <div class="hero-actions">
+      <a href="#casos" class="btn-primary">Ver casos de éxito →</a>
+      <a href="#servicios" class="btn-secondary">Explorar servicios</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-number">3.247<span>+</span></div>
+    <div class="stat-label">Leads procesados</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">94<span>%</span></div>
+    <div class="stat-label">Precisión de datos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">48<span>h</span></div>
+    <div class="stat-label">Tiempo de entrega</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">€6.4<span>K</span></div>
+    <div class="stat-label">Ahorrados por cliente</div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section class="section" id="servicios">
+  <div class="section-label">Servicios</div>
+  <h2 class="section-title">Tres áreas. Un solo proveedor.</h2>
+  <p class="section-desc">Cada servicio incluye entregables concretos, métricas de resultado y entrega en 48–72 horas.</p>
+
+  <div class="services-grid">
+
+    <!-- S1 -->
+    <div class="service-card green reveal">
+      <div class="service-number">01 / 03</div>
+      <div class="service-icon">🎯</div>
+      <div class="service-name">Prospección de Ventas B2B</div>
+      <div class="service-client">Caso real: LeadBoost AI</div>
+      <p class="service-desc">Leads hiperqualificados con intención de compra verificada, emails fríos listos para enviar y diagnóstico de tu pipeline.</p>
+      <div class="service-results">
+        <div class="result-pill"><span class="dot"></span>Tasa de respuesta cold email: 31%</div>
+        <div class="result-pill"><span class="dot"></span>Pipeline activo: +43% en 30 días</div>
+        <div class="result-pill"><span class="dot"></span>11 horas/semana recuperadas</div>
+      </div>
+      <div class="service-divider"></div>
+      <ul class="deliverables">
+        <li>10 leads cualificados con contacto verificado</li>
+        <li>3 emails fríos personalizados por señal</li>
+        <li>Informe de salud del pipeline actual</li>
+      </ul>
+      <div class="service-divider"></div>
+      <div class="service-price">€350 – €600</div>
+      <div class="service-price-label">por entrega · 48h</div>
+    </div>
+
+    <!-- S2 -->
+    <div class="service-card amber reveal">
+      <div class="service-number">02 / 03</div>
+      <div class="service-icon">🌿</div>
+      <div class="service-name">SEO y Marketing de Contenidos</div>
+      <div class="service-client">Caso real: GreenGuru</div>
+      <p class="service-desc">Auditoría técnica, reescritura SEO y arquitectura de cluster de contenido para rankear y convertir tráfico en ventas.</p>
+      <div class="service-results">
+        <div class="result-pill"><span class="dot"></span>Tráfico orgánico: +67% en 11 semanas</div>
+        <div class="result-pill"><span class="dot"></span>Posición media: de 41.3 → 8.7</div>
+        <div class="result-pill"><span class="dot"></span>Conversión blog→curso: 0.3% → 1.9%</div>
+      </div>
+      <div class="service-divider"></div>
+      <ul class="deliverables">
+        <li>Auditoría SEO de 5 páginas clave</li>
+        <li>Reescritura de 1 artículo (500+ palabras)</li>
+        <li>Cluster: Pillar page + 3 artículos satélite</li>
+      </ul>
+      <div class="service-divider"></div>
+      <div class="service-price">€500 – €900</div>
+      <div class="service-price-label">por mes · retainer</div>
+    </div>
+
+    <!-- S3 -->
+    <div class="service-card blue reveal">
+      <div class="service-number">03 / 03</div>
+      <div class="service-icon">💼</div>
+      <div class="service-name">CFO Virtual · Operaciones Financieras</div>
+      <div class="service-client">Caso real: UrbanBites</div>
+      <p class="service-desc">Limpieza de transacciones, categorización por centro de coste, caza de suscripciones zombies y P&L por local.</p>
+      <div class="service-results">
+        <div class="result-pill"><span class="dot"></span>€6.435/año recuperados en suscripciones</div>
+        <div class="result-pill"><span class="dot"></span>Cierre mensual: 6h → 35 min</div>
+        <div class="result-pill"><span class="dot"></span>Cargo duplicado de €847 recuperado</div>
+      </div>
+      <div class="service-divider"></div>
+      <ul class="deliverables">
+        <li>Limpieza y categorización de 200 transacciones</li>
+        <li>Detección de suscripciones zombies</li>
+        <li>Resumen ejecutivo con P&L por local</li>
+      </ul>
+      <div class="service-divider"></div>
+      <div class="service-price">€400 – €800</div>
+      <div class="service-price-label">por mes · retainer</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASOS DE ÉXITO -->
+<div class="cases-section" id="casos">
+  <div class="cases-inner">
+
+    <div class="section-label">Casos reales</div>
+    <h2 class="section-title">Entregables, no promesas.</h2>
+    <p class="section-desc">Tres proyectos. Tres clientes. Resultados medibles desde la primera semana.</p>
+
+    <!-- CASO 1 -->
+    <div class="case-block reveal">
+      <div class="case-content">
+        <div class="case-tag green">Prospección B2B</div>
+        <h3 class="case-title">LeadBoost AI salió del estancamiento en 30 días</h3>
+        <p class="case-problem">Pipeline dependiente al 79% de referidos. El equipo perdía 14 horas semanales cualificando leads manualmente en LinkedIn sin criterios claros — y la tasa de respuesta a sus emails fríos era del 3.1%.</p>
+        <div class="case-metrics">
+          <div class="metric-box">
+            <div class="metric-value green">31%</div>
+            <div class="metric-desc">Tasa de respuesta cold email</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value green">+43%</div>
+            <div class="metric-desc">Pipeline activo en 30 días</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value green">11h</div>
+            <div class="metric-desc">Recuperadas por semana</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value green">2</div>
+            <div class="metric-desc">Demos cerradas semana 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-visual">
+        <div class="visual-header">
+          <div class="dot-red"></div><div class="dot-yellow"></div><div class="dot-green2"></div>
+          <span class="visual-title">leads-cualificados-leadboost.csv</span>
+        </div>
+        <div class="visual-body">
+          <table class="mock-table">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Contacto</th>
+                <th>Señal</th>
+                <th>Prior.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="mock-highlight">
+                <td><strong>Rocket Media</strong></td>
+                <td>Sofía Alonso</td>
+                <td>3 vacantes Ops</td>
+                <td><span class="tag-red">🔴 Alta</span></td>
+              </tr>
+              <tr>
+                <td><strong>Tangram Digital</strong></td>
+                <td>Marcos Vidal</td>
+                <td>CAC comentado</td>
+                <td><span class="tag-red">🔴 Alta</span></td>
+              </tr>
+              <tr class="mock-highlight">
+                <td><strong>Pixel & Co</strong></td>
+                <td>Laura Méndez</td>
+                <td>Migración CRM</td>
+                <td><span class="tag-red">🔴 Alta</span></td>
+              </tr>
+              <tr>
+                <td><strong>NorthStar Perf.</strong></td>
+                <td>Ana Ruiz</td>
+                <td>Job post activo</td>
+                <td><span class="tag-red">🔴 Alta</span></td>
+              </tr>
+              <tr class="mock-highlight">
+                <td><strong>The Content Lab</strong></td>
+                <td>Patricia Sanz</td>
+                <td>Queja pública</td>
+                <td><span class="tag-red">🔴 Alta</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 2 -->
+    <div class="case-block reverse reveal">
+      <div class="case-content">
+        <div class="case-tag amber">SEO · Contenidos</div>
+        <h3 class="case-title">GreenGuru pasó de invisible a posición media 8.7</h3>
+        <p class="case-problem">140 artículos publicados y el 91% del tráfico concentrado en solo 6 URLs. Canibalización de keywords, Core Web Vitals en rojo en móvil y cero enlazado interno hacia las páginas de curso.</p>
+        <div class="case-metrics">
+          <div class="metric-box">
+            <div class="metric-value amber">+67%</div>
+            <div class="metric-desc">Tráfico orgánico en 11 semanas</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value amber">8.7</div>
+            <div class="metric-desc">Posición media (antes: 41.3)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value amber">1.9%</div>
+            <div class="metric-desc">Conversión blog → curso</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value amber">+2m14s</div>
+            <div class="metric-desc">Tiempo en página</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-visual">
+        <div class="visual-header">
+          <div class="dot-red"></div><div class="dot-yellow"></div><div class="dot-green2"></div>
+          <span class="visual-title">auditoria-seo-greenguru.md</span>
+        </div>
+        <div class="visual-body">
+          <div class="seo-row">
+            <div class="seo-item">
+              <div class="seo-url">/blog/plantas-interior-poca-luz</div>
+              <div class="seo-issue">🚨 Canibalización de keywords</div>
+              <div class="seo-fix">Redirigir /plantas-sombra → reescribir H1 y H2 con variantes semánticas</div>
+            </div>
+            <div class="seo-item">
+              <div class="seo-url">/cursos/jardineria-sostenible-basico</div>
+              <div class="seo-issue">🔴 Zero backlinks internos</div>
+              <div class="seo-fix">Añadir 8–10 enlaces desde artículos + schema JSON-LD Course</div>
+            </div>
+            <div class="seo-item">
+              <div class="seo-url">/blog/compostaje-en-casa</div>
+              <div class="seo-issue">🟡 LCP 6.2s en móvil</div>
+              <div class="seo-fix">Comprimir imagen hero a WebP &lt;150KB + lazy loading</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 3 -->
+    <div class="case-block reveal">
+      <div class="case-content">
+        <div class="case-tag blue">CFO Virtual</div>
+        <h3 class="case-title">UrbanBites encontró €6.435/año que no sabía que tenía</h3>
+        <p class="case-problem">3 dark kitchens, una sola cuenta bancaria y un Excel que nadie entendía. Sin visibilidad por local, sin categorías, con 11 suscripciones activas que nadie usaba y un cargo duplicado de €847 sin detectar.</p>
+        <div class="case-metrics">
+          <div class="metric-box">
+            <div class="metric-value blue">€6.4K</div>
+            <div class="metric-desc">Recuperados en suscripciones/año</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value blue">€847</div>
+            <div class="metric-desc">Cargo duplicado recuperado</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value blue">35min</div>
+            <div class="metric-desc">Cierre mensual (antes: 6 horas)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value blue">94.3%</div>
+            <div class="metric-desc">Precisión de categorización</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-visual">
+        <div class="visual-header">
+          <div class="dot-red"></div><div class="dot-yellow"></div><div class="dot-green2"></div>
+          <span class="visual-title">transacciones-limpias-urbanbites.csv</span>
+        </div>
+        <div class="visual-body">
+          <div class="finance-row">
+            <div class="fin-item ok">
+              <span class="fin-label">✅ Cobro Uber Eats — Semana 1</span>
+              <span class="fin-amount">+€3.247</span>
+            </div>
+            <div class="fin-item warn">
+              <span class="fin-label">🟡 Deliverect — Revisar uso</span>
+              <span class="fin-amount">-€45</span>
+            </div>
+            <div class="fin-item bad">
+              <span class="fin-label">🚨 DUPLICADO — Glovo Lavapiés</span>
+              <span class="fin-amount">-€1.893</span>
+            </div>
+            <div class="fin-item bad">
+              <span class="fin-label">🚨 Zapier — 0 tareas en 90 días</span>
+              <span class="fin-amount">-€27</span>
+            </div>
+            <div class="fin-item ok">
+              <span class="fin-label">✅ Nómina Enero — L3 Chamberí</span>
+              <span class="fin-amount">-€1.420</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROCESO -->
+<section class="section" id="proceso">
+  <div class="section-label">Proceso</div>
+  <h2 class="section-title">De brief a entregable<br>en 48 horas.</h2>
+  <p class="section-desc">Sin reuniones interminables. Sin burocracia. Solo trabajo hecho.</p>
+
+  <div class="process-grid">
+    <div class="process-step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Brief de 15 minutos</div>
+      <p class="step-desc">Completas un formulario o me mandas un Loom. Me cuentas el problema, el contexto y lo que mides. Sin reuniones.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">02</div>
+      <div class="step-title">Análisis y producción</div>
+      <p class="step-desc">Proceso tus datos, investigo tu mercado y construyo los entregables. Uso IA para el 80% del trabajo, criterio humano para el 20% que importa.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">03</div>
+      <div class="step-title">Entrega en 48h</div>
+      <p class="step-desc">Recibes el entregable completo en Notion, PDF o el formato que prefieras. Con contexto, instrucciones de uso y próximos pasos claros.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">04</div>
+      <div class="step-title">Revisión incluida</div>
+      <p class="step-desc">Una ronda de revisión incluida en todos los servicios. Si algo no está exactamente como lo necesitas, lo ajusto sin coste adicional.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq" style="padding-top:0;">
+  <div class="section-label">Preguntas frecuentes</div>
+  <h2 class="section-title">Las dudas más comunes.</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Cómo sé que los entregables serán de calidad y no genéricos?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        Cada entregable se personaliza con tus datos reales: tu empresa, tu mercado, tus competidores y tu contexto específico. No uso plantillas genéricas. Los casos de éxito de esta página son ejemplos reales del nivel de detalle que verás en tu proyecto.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿En qué formato entrego los outputs?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        Notion (listo para compartir con tu equipo), Google Docs, PDF ejecutivo, o CSV/Excel según el tipo de servicio. Para el servicio de finanzas, entrego siempre un archivo de datos limpio + el resumen ejecutivo en Notion. Para SEO, el artículo en formato listo para copiar en tu CMS.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Puedo contratar los tres servicios a la vez?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        Sí, y tiene sentido hacerlo: los tres se complementan. La prospección B2B se nutre del contenido SEO. Las finanzas te dicen cuánto puedes invertir en cada canal. Hablo de un paquete combinado con descuento si quieres los tres en el mismo mes.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Trabajas con empresas fuera de España?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        Sí. Trabajo en español e inglés. Para el servicio de prospección B2B puedo generar leads en cualquier mercado europeo o latinoamericano. Para SEO, tengo experiencia con dominios .es, .com, .mx y .co. Para finanzas, trabajo con cualquier divisa y cualquier banco que exporte CSV.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ¿Hay compromiso de permanencia en los servicios mensuales?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        No. Trabajo mes a mes. Si después del primer mes no ves el valor, no hay penalización ni letra pequeña. Mi modelo depende de que los resultados sean tan buenos que quieras continuar — no de atarte contractualmente.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-section" id="contacto">
+  <div class="cta-inner">
+    <div class="cta-label">Siguiente paso</div>
+    <h2 class="cta-title">¿Empezamos<br><em>esta semana?</em></h2>
+    <p class="cta-sub">Brief de 15 minutos. Entregable en 48 horas. Sin compromisos de permanencia.</p>
+    <div class="cta-buttons">
+      <a href="mailto:hola@tudominio.com" class="btn-cta-main">Envíame un brief →</a>
+      <a href="https://calendly.com" target="_blank" class="btn-cta-sec">Agendar llamada de 20 min</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">AI<span>Freelancer</span></span>
+  <span class="footer-copy">© 2025 · Servicios de consultoría con IA · Hecho con Claude</span>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Staggered service cards
+  document.querySelectorAll('.service-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+
+</body>
+</html>
